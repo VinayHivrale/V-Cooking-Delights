@@ -26,6 +26,14 @@ const UserSchema = new mongoose.Schema({
         required: [true, 'Please provide password'],
         minlength: 3
     },
+    likedRecipes: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Recipe'
+    }],
+    dislikedRecipes: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Recipe'
+    }]
 });
 
 UserSchema.pre("save", async function(){

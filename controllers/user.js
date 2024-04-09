@@ -51,7 +51,6 @@ const getAllUsers = async (req, res) => {
   let users = await User.find({});
   return res.status(200).json({ users });
 
-
 };
 
 

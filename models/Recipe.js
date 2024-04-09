@@ -57,7 +57,20 @@ const recipeSchema = new Schema({
     createdAt: {
         type: Date,
         default: Date.now
-    }
+    },
+    likes: [{
+        user: {
+            type: Schema.Types.ObjectId,
+            ref: 'User'
+        }
+    }],
+    dislikes: [{
+        user: {
+            type: Schema.Types.ObjectId,
+            ref: 'User'
+            
+        }
+    }]
 }, { timestamps: true });
 
 const Recipe = mongoose.model('Recipe', recipeSchema);

@@ -4,12 +4,16 @@ const connectDB = require("./db/connect");
 const express = require("express");
 const cors = require('cors')
 const app = express();
-const mainRouter = require("./routes/user");
+const userRouter = require("./routes/user");
+const recipeRouter = require("./routes/recipe");
 
 app.use(express.json());
 
 app.use(cors())
-app.use("/api/v1", mainRouter);
+app.use("/api/v1", userRouter);
+app.use("/api/v1/recipe", recipeRouter);
+
+
 
 const port = process.env.PORT || 3000;
 

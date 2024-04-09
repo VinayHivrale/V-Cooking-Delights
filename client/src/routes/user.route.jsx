@@ -23,6 +23,7 @@ const Userroute = () => {
         <Route path="home" element={<Home />} />
         <Route path="Aboutus" element={<AboutUsPage />} />
         <Route path="recipes" element={<RecipePage  type="recipes"/>} />
+        <Route path="recipes/search/:search" element={<RecipePage type="search"/>} />
         <Route path="recipes/areas/:area" element={<RecipePage type="area" />} /> 
         <Route path="recipes/category/:category" element={<RecipePage type="category" />} /> 
         <Route path="recipes/:id" element={<RecipeDetailPages />} /> 
