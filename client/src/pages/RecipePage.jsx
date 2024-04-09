@@ -29,7 +29,9 @@ const RecipePage = ({ type }) => {
         "http://localhost:3000/api/v1/dashboard",
         axiosConfig
       );
+      
       setData({ msg: response.data.msg });
+      return response;
     } catch (error) {
       toast.error(error.message);
     }
@@ -38,7 +40,8 @@ const RecipePage = ({ type }) => {
   useEffect(() => {
     const fetchRecipes = async () => {
       try {
-        veification();
+       const user= veification();
+       
         if (token === "") {
           navigate("/login");
           toast.warn("Please login first to access dashboard");
@@ -52,6 +55,8 @@ const RecipePage = ({ type }) => {
           "http://localhost:3000/api/v1/recipes",
           axiosConfig
         );
+
+
         if (type === "category" && category) {
           // Filter recipes by category ID
           const filteredRecipes = response.data.recipes.filter(

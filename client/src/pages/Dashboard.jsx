@@ -29,7 +29,7 @@ const Dashboard = () => {
     try {
       const response = await axios.get("http://localhost:3000/api/v1/dashboard", axiosConfig);
       setData({ msg: response.data.msg })
-
+            console.log("resis",response);
     } catch (error) {
       toast.error(error.message);
     }
