@@ -41,7 +41,7 @@ const RecipePage = ({ type }) => {
     const fetchRecipes = async () => {
       try {
        const user= veification();
-       
+
         if (token === "") {
           navigate("/login");
           toast.warn("Please login first to access dashboard");
@@ -83,7 +83,7 @@ const RecipePage = ({ type }) => {
     };
 
     fetchRecipes();
-  }, [token, type, category]);
+  }, [token, type, category,search]);
 
   if (loading) {
     <div>loading</div>;

@@ -27,17 +27,17 @@ const getUser = async (req, res) => {
 
 const login = async (req, res) => {
   const { email, password } = req.body;
-
+    
   if (!email || !password) {
     return res.status(400).json({
       msg: "Bad request. Please add email and password in the request body",
     });
   }
-
+ 
   let foundUser = await User.findOne({ email: req.body.email });
+  console.log( foundUser.name);
   if (foundUser) {
     const isMatch = await foundUser.comparePassword(password);
-
     if (isMatch) {
       const token = jwt.sign(
         { id: foundUser._id, name: foundUser.name },
@@ -55,6 +55,7 @@ const login = async (req, res) => {
     return res.status(400).json({ msg: "Bad credentails" });
   }
 };
+
 
 const dashboard = async (req, res) => {
  

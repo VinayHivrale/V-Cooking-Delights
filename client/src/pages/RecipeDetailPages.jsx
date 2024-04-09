@@ -24,7 +24,7 @@ const RecipeDetailPage = () => {
           'Authorization': `Bearer ${token}`
         }
       });
-      setUserData({ id: response.data.id });
+      setUserData({ id: response.data.id, msg: response.data.msg , });
       return response;
     } catch (error) {
       toast.error(error.message);
@@ -156,25 +156,30 @@ const RecipeDetailPage = () => {
               <div className="text-center  my-4">
                 <button
                   className={`mx-2 px-5  py-3 text-black bg-${isLiked ? 'green' : 'white'}-500  border-2 border-black hover:bg-${isLiked ? 'green' : 'white'}-600 focus:outline-none rounded-full transition-all duration-300`}
+                  style={{ backgroundColor: isLiked ? 'green' : 'white' }}
                   onClick={handleLike}
                 >
                   <FontAwesomeIcon
                     icon={faThumbsUp}
                     className='h-8 w-8'
-                    style={{ color: isLiked ? 'white' : 'green' }}
+                    style={{ color: isLiked ? 'black' : 'green' }}
                   />
                 </button>
                 <button
                   className={`mx-2  px-5  py-3 text-black bg-${isDisliked ? 'red' : 'white'}-500  border-2 border-black hover:bg-${isDisliked ? 'red' : 'white'}-600 focus:outline-none rounded-full transition-all duration-300`}
+                  style={{ backgroundColor: isDisliked ? 'red' : 'white' }}
                   onClick={handleDislike}
                 >
                   <FontAwesomeIcon
                     icon={faThumbsDown}
                     className='h-8 w-8'
-                    style={{ color: isDisliked ? 'white' : 'red' }}
+                    style={{ color: isDisliked ? 'black' : 'red' }}
                   />
                 </button>
               </div>
+
+
+
 
 
 

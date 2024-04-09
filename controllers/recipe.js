@@ -92,7 +92,48 @@ const dislikeRecipe = async (req, res) => {
     }
 };
 
-module.exports = { likeRecipe, dislikeRecipe };
+const getRecentRecipes = async (req, res) => {
+    try {
+      // Fetch 12 most recent recipes from the database
+      const recentRecipes = await Recipe.find({}).sort({ createdAt: -1 }).limit(12).populate('category');
+    
+      return res.status(200).json({ recentRecipes });
+    } catch (error) {
+      console.error('Error fetching recent recipes:', error);
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+  };
+
+  const getMostLikedRecipes = async (req, res) => {
+    try {
+      // Fetch all recipes from the database
+      const recipes = await Recipe.find({});
+    
+      // Sort recipes based on likes (primary) and dislikes (secondary)
+      recipes.sort((a, b) => {
+        // If likes are equal, sort by fewer dislikes
+        if (a.likes.length === b.likes.length) {
+          return a.dislikes.length - b.dislikes.length;
+        }
+        // Sort by most likes
+        return b.likes.length - a.likes.length;
+      });
+    
+      // Limit the number of recipes to 9
+      const limitedRecipes = recipes.slice(0, 9);
+    
+      return res.status(200).json({ sortedRecipes: limitedRecipes });
+    } catch (error) {
+      console.error('Error fetching and sorting recipes:', error);
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+  };
+  
+  
+  
+  
+
+module.exports = { likeRecipe, dislikeRecipe ,getRecentRecipes,getMostLikedRecipes};
 
 
 

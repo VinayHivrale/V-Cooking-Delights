@@ -15,9 +15,9 @@ const Dashboard = () => {
   const [token, setToken] = useState(JSON.parse(localStorage.getItem("auth")) || "");
   const [data, setData] = useState({});
   const navigate = useNavigate();
-
+  const [recentRecipes, setRecentRecipes] = useState([]);
   const [areas, setAreas] = useState([]);
-
+  const [mostLikedRecipes, setMostLikedRecipes] = useState([]);
   const veification = async () => {
 
     let axiosConfig = {
@@ -29,7 +29,7 @@ const Dashboard = () => {
     try {
       const response = await axios.get("http://localhost:3000/api/v1/dashboard", axiosConfig);
       setData({ msg: response.data.msg })
-            console.log("resis",response);
+      console.log("resis", response);
     } catch (error) {
       toast.error(error.message);
     }
@@ -47,16 +47,35 @@ const Dashboard = () => {
           navigate("/login");
           toast.warn("Please login first to access dashboard");
         }
-        const response = await axios.get('http://localhost:3000/api/v1/categories');
-        const rareas = await axios.get('http://localhost:3000/api/v1/areas');
-        setCategories(response.data.categories);
-        setAreas(rareas.data);
-        // console.log("jhgjhghgjhgjhg",rareas);
-        // // Ensure areas is properly set here
+
+        // Fetch categories
+        const responseCategories = await axios.get('http://localhost:3000/api/v1/categories');
+        setCategories(responseCategories.data.categories);
+
+
+        // Fetch areas
+        const responseAreas = await axios.get('http://localhost:3000/api/v1/areas');
+        setAreas(responseAreas.data);
+
+        // Fetch recently uploaded recipes
+        const responseRecipes = await axios.get('http://localhost:3000/api/v1/recipe/recentRecipes');
+  console.log("recently uploaded ",responseRecipes);
+        // Extract recent recipes from the response
+        const recentRecipes = responseRecipes.data.recentRecipes;
+        setRecentRecipes(recentRecipes);
+
+        const responseMostLikedRecipes = await axios.get('http://localhost:3000/api/v1/recipe/most-liked');
+        const mostLikedRecipes = responseMostLikedRecipes.data.sortedRecipes;
+    
+        // Set the state with the most liked recipes
+        setMostLikedRecipes(mostLikedRecipes);
+        // Set the state with the recent recipes
+        
       } catch (error) {
-        console.error('Error fetching categories:', error.message);
+        console.error('Error fetching data:', error.message);
       }
     };
+
 
     fetchData();
   }, [token]);
@@ -91,6 +110,30 @@ const Dashboard = () => {
             </div>
 
           </div>
+          <h1 className='text-5xl font-bold p-4 text-center hover:scale-90 duration-150 transition hover:bg-green-300 rounded-full'> Explore Recently Uploaded</h1>
+          <div className="grid grid-cols-1 mt-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
+            {recentRecipes.map((recipe, index) => (
+              <RecipeCard
+                key={index}
+                recipeId={recipe._id}
+                title={recipe.strMeal}
+                image={recipe.strMealThumb}
+                description={recipe.strInstructions.substring(0, 300)}
+              />
+            ))}
+          </div>
+          <h1 className='text-5xl font-bold p-4 text-center hover:scale-90 duration-150 transition hover:bg-green-300 rounded-full'> Most Liked Recipes</h1>
+  <div className="grid grid-cols-1 mt-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
+    {mostLikedRecipes.map((recipe, index) => (
+      <RecipeCard
+        key={index}
+        recipeId={recipe._id}
+        title={recipe.strMeal}
+        image={recipe.strMealThumb}
+        description={recipe.strInstructions.substring(0, 300)}
+      />
+    ))}
+  </div>
         </div>
         <Footer />
       </div>
