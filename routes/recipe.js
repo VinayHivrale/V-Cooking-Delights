@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const { likeRecipe, dislikeRecipe,getRecentRecipes,getMostLikedRecipes} = require("../controllers/recipe");
+const { likeRecipe, dislikeRecipe, getRecentRecipes ,getMostLikedRecipes} = require("../controllers/recipe");
 const authMiddleware = require('../middleware/auth')
 
 // Use HTTP POST method for both like and dislike actions

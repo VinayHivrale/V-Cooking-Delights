@@ -35,9 +35,12 @@ const login = async (req, res) => {
   }
  
   let foundUser = await User.findOne({ email: req.body.email });
-  console.log( foundUser.name);
+  
+  console.log(foundUser.name);
   if (foundUser) {
+
     const isMatch = await foundUser.comparePassword(password);
+    console.log(isMatch);
     if (isMatch) {
       const token = jwt.sign(
         { id: foundUser._id, name: foundUser.name },
@@ -46,7 +49,7 @@ const login = async (req, res) => {
           expiresIn: "30d",
         }
       );
-
+      
       return res.status(200).json({ msg: "user logged in", token });
     } else {
       return res.status(400).json({ msg: "Bad password" });

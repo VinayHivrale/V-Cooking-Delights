@@ -8,39 +8,38 @@ const likeRecipe = async (req, res) => {
         const { recipeId } = req.params;
         const { id: userId } = req.user;
 
-        const user = await User.findById(userId);
         const recipe = await Recipe.findById(recipeId);
-        if (!user || !recipe) {
-            return res.status(404).json({ error: 'User or recipe not found' });
+        if (!recipe) {
+            return res.status(404).json({ error: 'Recipe not found' });
         }
 
         // Check if the user already liked the recipe
         const alreadyLiked = recipe.likes.some(like => like.user.toString() === userId);
-        console.log("alredy liked",alreadyLiked);
+        console.log("already liked", alreadyLiked);
         // Check if the user already disliked the recipe
         const alreadyDisliked = recipe.dislikes.some(dislike => dislike.user.toString() === userId);
-        console.log("alredy disliked",alreadyDisliked);
-  
+        console.log("already disliked", alreadyDisliked);
+
+        let update = {};
+
         if (alreadyLiked) {
             // User already liked the recipe, remove like
-            recipe.likes = recipe.likes.filter(like => like.user.toString() !== userId);
-            user.likedRecipes = user.likedRecipes.filter(likedRecipe => likedRecipe.toString() !== recipeId);
+            update = {
+                $pull: { 'likes': { user: userId } }
+            };
         } else {
             // Add like if the user didn't like the recipe before
-            recipe.likes.push({ user: userId });
+            update = {
+                $addToSet: { 'likes': { user: userId } }
+            };
             // Remove dislike if the user disliked the recipe before
             if (alreadyDisliked) {
-                recipe.dislikes = recipe.dislikes.filter(dislike => dislike.user.toString() !== userId);
-                user.dislikedRecipes = user.dislikedRecipes.filter(dislikedRecipe => dislikedRecipe.toString() !== recipeId);
-            }
-            // Add recipe to user's likedRecipes array
-            if (!user.likedRecipes.includes(recipeId)) {
-                user.likedRecipes.push(recipeId);
+                update.$pull = { 'dislikes': { user: userId } };
             }
         }
 
-        await recipe.save();
-        await user.save();
+        await Recipe.updateOne({ _id: recipeId }, update);
+
         res.status(200).json({ message: 'Recipe liked successfully' });
     } catch (error) {
         console.error(error);
@@ -53,44 +52,45 @@ const dislikeRecipe = async (req, res) => {
         const { recipeId } = req.params;
         const { id: userId } = req.user;
 
-        const user = await User.findById(userId);
         const recipe = await Recipe.findById(recipeId);
-        if (!user || !recipe) {
-            return res.status(404).json({ error: 'User or recipe not found' });
+        if (!recipe) {
+            return res.status(404).json({ error: 'Recipe not found' });
         }
 
         // Check if the user already liked the recipe
         const alreadyLiked = recipe.likes.some(like => like.user.toString() === userId);
         // Check if the user already disliked the recipe
-        console.log("alredy liked",alreadyLiked);
         const alreadyDisliked = recipe.dislikes.some(dislike => dislike.user.toString() === userId);
-        console.log("alredy disliked",alreadyDisliked);
+        console.log("already disliked", alreadyDisliked);
+
+        let update = {};
+
         if (alreadyDisliked) {
             // User already disliked the recipe, remove dislike
-            recipe.dislikes = recipe.dislikes.filter(dislike => dislike.user.toString() !== userId);
-            user.dislikedRecipes = user.dislikedRecipes.filter(dislikedRecipe => dislikedRecipe.toString() !== recipeId);
+            update = {
+                $pull: { 'dislikes': { user: userId } }
+            };
         } else {
             // Add dislike if the user didn't dislike the recipe before
-            recipe.dislikes.push({ user: userId });
+            update = {
+                $addToSet: { 'dislikes': { user: userId } }
+            };
             // Remove like if the user liked the recipe before
             if (alreadyLiked) {
-                recipe.likes = recipe.likes.filter(like => like.user.toString() !== userId);
-                user.likedRecipes = user.likedRecipes.filter(likedRecipe => likedRecipe.toString() !== recipeId);
-            }
-            // Add recipe to user's dislikedRecipes array
-            if (!user.dislikedRecipes.includes(recipeId)) {
-                user.dislikedRecipes.push(recipeId);
+                update.$pull = { 'likes': { user: userId } };
             }
         }
 
-        await recipe.save();
-        await user.save();
+        await Recipe.updateOne({ _id: recipeId }, update);
+
         res.status(200).json({ message: 'Recipe disliked successfully' });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Internal Server Error' });
     }
 };
+
+
 
 const getRecentRecipes = async (req, res) => {
     try {
