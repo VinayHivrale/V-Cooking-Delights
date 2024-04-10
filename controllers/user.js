@@ -3,6 +3,7 @@ const User = require("../models/User");
 const Recipe = require("../models/Recipe");
 const Area = require("../models/Area");
 const Categories = require('../models/Categories'); // Assuming your Category model is in a separate file
+const bcrypt = require('bcrypt');
 
 const getUser = async (req, res) => {
   try {
@@ -25,22 +26,40 @@ const getUser = async (req, res) => {
 };
 
 
+const register = async (req, res) => {
+  let foundUser = await User.findOne({ email: req.body.email });
+  if (foundUser === null) {
+    let { username, email, password } = req.body;
+    if (username.length && email.length && password.length) {
+      const person = new User({
+        name: username,
+        email: email,
+        password: password,
+      });
+      await person.save();
+      return res.status(201).json({ person });
+    }else{
+        return res.status(400).json({msg: "Please add all values in the request body"});
+    }
+  } else {
+    return res.status(400).json({ msg: "Email already in use" });
+  }
+};
+
 const login = async (req, res) => {
   const { email, password } = req.body;
-    
+
   if (!email || !password) {
     return res.status(400).json({
       msg: "Bad request. Please add email and password in the request body",
     });
   }
- 
-  let foundUser = await User.findOne({ email: req.body.email });
-  
-  console.log(foundUser.name);
-  if (foundUser) {
 
+  let foundUser = await User.findOne({ email: req.body.email });
+  console.log(foundUser);
+  if (foundUser) {
     const isMatch = await foundUser.comparePassword(password);
-    console.log(isMatch);
+  console.log(isMatch);
     if (isMatch) {
       const token = jwt.sign(
         { id: foundUser._id, name: foundUser.name },
@@ -49,7 +68,7 @@ const login = async (req, res) => {
           expiresIn: "30d",
         }
       );
-      
+
       return res.status(200).json({ msg: "user logged in", token });
     } else {
       return res.status(400).json({ msg: "Bad password" });
@@ -58,6 +77,7 @@ const login = async (req, res) => {
     return res.status(400).json({ msg: "Bad credentails" });
   }
 };
+
 
 
 const dashboard = async (req, res) => {
@@ -77,30 +97,6 @@ const getAllUsers = async (req, res) => {
   let users = await User.find({});
   return res.status(200).json({ users });
 
-};
-
-
-
-
-
-const register = async (req, res) => {
-  let foundUser = await User.findOne({ email: req.body.email });
-  if (foundUser === null) {
-    let { username, email, password } = req.body;
-    if (username.length && email.length && password.length) {
-      const person = new User({
-        name: username,
-        email: email,
-        password: password,
-      });
-      await person.save();
-      return res.status(201).json({ person });
-    }else{
-        return res.status(400).json({msg: "Please add all values in the request body"});
-    }
-  } else {
-    return res.status(400).json({ msg: "Email already in use" });
-  }
 };
 
 const getAllRecipes = async (req, res) => {
