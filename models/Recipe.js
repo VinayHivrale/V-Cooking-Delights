@@ -7,11 +7,7 @@ const ingredientSchema = new Schema({
 });
 
 const recipeSchema = new Schema({
-    idMeal: {
-        type: String,
-        required: true,
-        unique: true
-    },
+   
     strMeal: {
         type: String,
         required: true
@@ -72,6 +68,7 @@ const recipeSchema = new Schema({
         }
     }]
 }, { timestamps: true });
+
 
 const Recipe = mongoose.model('Recipe', recipeSchema);
 

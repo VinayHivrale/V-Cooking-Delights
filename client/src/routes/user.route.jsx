@@ -10,6 +10,7 @@ import Home from "../pages/Home";
 import RecipePage from "../pages/RecipePage";
 import RecipeDetailPages from "../pages/RecipeDetailPages";
 import AboutUsPage from "../pages/AboutUsPage";
+import Recipeform from "../pages/Recipeform";
 
 const Userroute = () => {
   return (
@@ -27,7 +28,7 @@ const Userroute = () => {
         <Route path="recipes/areas/:area" element={<RecipePage type="area" />} /> 
         <Route path="recipes/category/:category" element={<RecipePage type="category" />} /> 
         <Route path="recipes/:id" element={<RecipeDetailPages />} /> 
-
+        <Route path="user/createrecipe" element={<Recipeform/>} />
       </Route>
     </Routes>
   );

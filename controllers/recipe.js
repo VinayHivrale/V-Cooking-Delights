@@ -2,6 +2,10 @@
 // Import necessary models
 const Recipe = require('../models/Recipe');
 const User = require('../models/User');
+
+const Category = require('../models/Categories');
+
+
 const likeRecipe = async (req, res) => {
     try {
         const { recipeId } = req.params;
@@ -93,6 +97,55 @@ const dislikeRecipe = async (req, res) => {
 
 
 
+const createRecipe = async (req, res) => {
+  try {
+    // Extract recipe data from request body
+    const { strMeal, category, strArea, strInstructions, strMealThumb, strTags, strYoutube, ingredients, userId } = req.body;
+    console.log(strMeal, category);
+    // Check if the category exists
+    let categoryId;
+    const existingCategory = await Category.findOne({ strCategory: category });
+    if (existingCategory) {
+      categoryId = existingCategory._id;
+    } else {
+      // Create a new category if it doesn't exist
+      const newCategory = new Category({
+        idCategory: '100',
+        strCategory: category,
+        // Add additional fields here if needed
+      });
+      const savedCategory = await newCategory.save();
+      categoryId = savedCategory._id;
+    }
+    console.log(strMeal, category);
+
+    // Create a new recipe object
+    const newRecipe = new Recipe({
+      strMeal,
+      category: categoryId,
+      strArea,
+      strInstructions,
+      strMealThumb,
+      strTags,
+      strYoutube,
+      ingredients,
+      createdBy: userId
+    });
+
+    // Save the new recipe to the database
+    const savedRecipe = await newRecipe.save();
+
+    res.status(201).json(savedRecipe); // Return the saved recipe as JSON response
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ msg: 'Server Error' });
+  }
+};
+
+
+
+  
+
 const getRecentRecipes = async (req, res) => {
     try {
       // Fetch 12 most recent recipes from the database
@@ -134,7 +187,7 @@ const getRecentRecipes = async (req, res) => {
   
   
 
-module.exports = { likeRecipe, dislikeRecipe ,getRecentRecipes,getMostLikedRecipes};
+module.exports = { likeRecipe, dislikeRecipe ,getRecentRecipes,getMostLikedRecipes,createRecipe};
 
 
 

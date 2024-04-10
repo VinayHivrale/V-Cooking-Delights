@@ -17,6 +17,7 @@ const RecipeDetailPage = () => {
   const [token, setToken] = useState(JSON.parse(localStorage.getItem("auth")) || "");
   const [userData, setUserData] = useState({});
 
+
   const fetchUserData = async () => {
     try {
       const response = await axios.get("http://localhost:3000/api/v1/dashboard", {
@@ -24,7 +25,7 @@ const RecipeDetailPage = () => {
           'Authorization': `Bearer ${token}`
         }
       });
-      setUserData({ id: response.data.id, msg: response.data.msg , });
+      setUserData({ id: response.data.id, msg: response.data.msg, });
       return response;
     } catch (error) {
       toast.error(error.message);
@@ -141,7 +142,7 @@ const RecipeDetailPage = () => {
     <div>
       <div className="container mx-auto mt-8">
         <Navbar isLoggedIn={token !== ""} userName={userData.msg} />
-        <div className="mt-4 grid grid-cols-2 px-4 shadow-md">
+        <div className="mt-4 grid grid-cols-2 pb-4 px-4 shadow-md">
           <div className="bg-white p-8 rounded-lg shadow">
             <h1 className="text-4xl py-2 text-center font-semibold mb-2">{recipe.strMeal}</h1>
             <img className="rounded-md w-full h-auto mb-4" src={recipe.strMealThumb} alt={recipe.strMeal} />
@@ -151,7 +152,7 @@ const RecipeDetailPage = () => {
                   <h2 className="text-xl font-semibold mb-2">Category</h2>
                   <p>{recipe.category.strCategory}</p>
                 </div>
-                <img src={recipe.category.strCategoryThumb} alt={recipe.category.strCategory} className="w-32 ronded h-32 mb-4" />
+                <img src={recipe.category.strCategoryThumb} alt={recipe.category.strCategory} className="w-32 rounded-full h-32 mb-4" />
               </div>
               <div className="text-center  my-4">
                 <button
@@ -178,11 +179,6 @@ const RecipeDetailPage = () => {
                 </button>
               </div>
 
-
-
-
-
-
               <div>
                 <h2 className='text-xl font-semibold mb-2'>Area</h2>
                 <p className="text-gray-600 mb-4">{recipe.strArea}</p>
@@ -190,25 +186,41 @@ const RecipeDetailPage = () => {
             </div>
           </div>
           <div className="aspect-w-16 flex justify-end pt-24 aspect-h-9">
-            <iframe
-              className="w-[48rem] h-[27rem] p-4"
+
+            <iframe className="w-[48rem] h-[27rem] p-4"
               src={recipe.strYoutube.replace('watch?v=', 'embed/')}
-              frameBorder="0"
-              title="Embedded Video"
-            ></iframe>
+              title="YouTube video player" frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; 
+               web-share" referrerpolicy="strict-origin-when-cross-origin"
+              allowfullscreen ></iframe>
           </div>
         </div>
-        <div className="bg-white p-8 flex justify-between rounded-lg shadow">
-          <div className='w-1/3'>
-            <h2 className="text-xl font-semibold mb-2">Ingredients</h2>
-            <ul className="list-disc ml-6">
-              {recipe.ingredients.map((ingredient, index) => (
-                <li key={index}>{`${ingredient.ingredient} - ${ingredient.measure}`}</li>
-              ))}
-            </ul>
+        <div className="bg-[#fae5f5] shadow-sm p-8 mt-2 flex justify-between  ">
+          <div className='w-1/3 '>
+            <h2 className="text-2xl px-4 font-semibold mb-2">Ingredients</h2>
+            <div className='p-4'>
+            <table className=" border  border-gray-400">
+              <thead>
+                <tr>
+                  <th className="border border-gray-400 p-2">Ingredient</th>
+                  <th className="border border-gray-400 p-2">Measure</th>
+                </tr>
+              </thead>
+              <tbody>
+                {recipe.ingredients.map((ingredient, index) => (
+                  <tr className='+++++++++++++' key={index}>
+                    <td className="border border-gray-400 p-2">{ingredient.ingredient}</td>
+                    <td className="border border-gray-400 p-2">{ingredient.measure}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+
+            </div>
+            
           </div>
           <div className='w-2/3'>
-            <h2 className="text-xl font-semibold mb-2">Instructions</h2>
+            <h2 className="text-2xl font-semibold mb-2">Instructions</h2>
             <ol>
               {instructionsSteps.map((step, index) => (
                 <li key={index}><strong>Step {index + 1}:</strong> {step}</li>
