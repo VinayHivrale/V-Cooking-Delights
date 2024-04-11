@@ -25,22 +25,6 @@ const RecipeDetailPage = () => {
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
   
-
-
-  const fetchComments = async () => {
-    try {
-      const response = await axios.get(`http://localhost:3000/api/v1/comment/${id}`);
-      setComments(response.data.comments);
-      
-      console.log("Comment dfgdfgdghdghfghfghfghfghfghfgh");
-      console.log(response.data.comments);
-
-    } catch (error) {
-      console.error('Error fetching comments:', error);
-    }
-  };
-
-
   const handleSubmitComment = async (content) => {
     try {
       const content = newComment;
@@ -65,6 +49,17 @@ const RecipeDetailPage = () => {
     }
   };
   
+  const fetchComments = async () => {
+    try {
+      const response = await axios.get(`http://localhost:3000/api/v1/comment/${id}`);
+      setComments(response.data.comments);
+
+      console.log(response.data.comments);
+
+    } catch (error) {
+      console.error('Error fetching comments:', error);
+    }
+  };
   
 
   const fetchUserData = async () => {
@@ -127,7 +122,7 @@ const RecipeDetailPage = () => {
   }, [id, token, userData.id, isLiked, isDisliked]);
 
   useEffect(() => {
-    console.log("useeffect is riunninfered");
+    console.log("useeffect is nunning ...");
     fetchComments();
   }, []);
 
@@ -361,7 +356,7 @@ const RecipeDetailPage = () => {
 
           {/* Display existing comments */}
           {comments.map((comment) => (
-            <Comment key={comment._id} comment={comment} />
+            <Comment key={comment._id} comment={comment}  fetchComments={fetchComments}/>
           ))}
         </div>
       </div>

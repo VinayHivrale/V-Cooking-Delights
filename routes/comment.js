@@ -5,7 +5,7 @@ const { createComment, updateComment, deleteComment, getAllComments } = require(
 
 router.post("/:recipeId", authMiddleware, createComment);
 router.put("/", authMiddleware, updateComment);
-router.delete("/", authMiddleware, deleteComment);
+router.delete("/:commentId", authMiddleware, deleteComment);
 router.get("/:recipeId",getAllComments);
 
 

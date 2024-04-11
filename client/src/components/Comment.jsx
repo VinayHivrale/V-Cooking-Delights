@@ -1,11 +1,15 @@
 import React, { useState } from "react";
 import { MdMoreVert } from "react-icons/md";
 import TextField from "@mui/material/TextField";
+import axios from "axios";
 
-const Comment = ({ comment }) => {
+const Comment = ({ comment, fetchComments }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [editContent, setEditContent] = useState(comment.content);
+  const [token, setToken] = useState(
+    JSON.parse(localStorage.getItem("auth")) || ""
+  );
 
   const handleEdit = () => {
     setIsEditing(true);
@@ -17,17 +21,57 @@ const Comment = ({ comment }) => {
     setIsDropdownOpen(false);
   };
 
-  const handleSaveEdit = () => {
-    // Call the onEdit function with the updated content
-    
+  const handleSaveEdit = async () => {
+    const content = editContent;
+    const commentId = comment._id;
+  
+    try {
+      const response = await axios.put(
+        `http://localhost:3000/api/v1/comment`,
+        { content, commentId },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+        console.log("calling the handleSaveEdit", response.data.comment);
+      if (response.status === 200) {
+        console.log('Comment updated successfully:', response.data.comment);
+        fetchComments();
+      }
+    } catch (error) {
+      console.error('Error updating comment:', error);
+    }
+  
     setIsEditing(false);
     setIsDropdownOpen(false);
   };
+  
+ 
+  const handleDelete = async () => {
+    const commentId = comment._id;
+    try {
+        const response = await axios.delete(
+            `http://localhost:3000/api/v1/comment/${commentId}`, 
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            }
+        );
 
-  const handleDelete = () => {
-    // Call the onDelete function with the comment ID
-   
-  };
+        if (response.status === 200) {
+            console.log("Comment deleted successfully");
+            fetchComments();
+        } else {
+            console.error("Failed to delete comment:", response.data.error);
+        }
+    } catch (error) {
+        console.error("Error deleting comment:", error.message);
+    }
+};
+
 
   return (
     <div key={comment._id} className="bg-[#FFF3EF] border-l-4 border-pink-300 rounded-md  p-4  mb-2">
