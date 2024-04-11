@@ -6,14 +6,14 @@ const cors = require('cors')
 const app = express();
 const userRouter = require("./routes/user");
 const recipeRouter = require("./routes/recipe");
+const commentRouter = require("./routes/comment");
 
 app.use(express.json());
 
 app.use(cors())
 app.use("/api/v1", userRouter);
 app.use("/api/v1/recipe", recipeRouter);
-
-
+app.use("/api/v1/comment", commentRouter);
 
 const port = process.env.PORT || 3000;
 
