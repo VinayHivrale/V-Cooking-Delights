@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FaTrash,FaPlus } from 'react-icons/fa';
@@ -66,9 +67,12 @@ const RecipeForm = () => {
         strYoutube: '',
         ingredients: [{ ingredient: '', measure: '' }]
       });
+    
       setCurrentStage(1); // Reset stage to first stage
+      toast.success("Recipe added successfully!");
     } catch (err) {
       console.error(err); // Handle error response
+      toast.error(err);
     }
   };
   

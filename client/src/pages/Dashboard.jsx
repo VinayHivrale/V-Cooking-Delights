@@ -91,7 +91,7 @@ const Dashboard = () => {
           <h1 className='text-5xl  font-bold p-4 text-center hover:scale-90 duration-150  transition hover:bg-green-300 rounded-full'> Explore Categories</h1>
           <div className="grid grid-cols-1  mt-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
             {categories.map((recipe, index) => (
-              <RecipeCard key={index} recipeId={recipe.idCategory} title={recipe.strCategory} image={recipe.strCategoryThumb} description={recipe.strCategoryDescription.substring(0, 300)} />
+              <RecipeCard key={index} recipeId={recipe._id} title={recipe.strCategory} image={recipe.strCategoryThumb} description={recipe.strCategoryDescription.substring(0, 300)} />
             ))}
           </div>
           <h1 className='text-5xl  font-bold p-4 my-8 text-center hover:scale-90 duration-150  transition hover:bg-green-300 rounded-full'> Explore Areas</h1>

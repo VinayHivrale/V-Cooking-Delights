@@ -60,7 +60,7 @@ const RecipePage = ({ type }) => {
         if (type === "category" && category) {
           // Filter recipes by category ID
           const filteredRecipes = response.data.recipes.filter(
-            (recipe) => recipe.category.idCategory === category
+            (recipe) => recipe.category._id === category
           );
           setRecipes(filteredRecipes);
         } else if (type === "area" && area) {

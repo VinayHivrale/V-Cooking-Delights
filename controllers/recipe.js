@@ -120,7 +120,7 @@ const createRecipe = async (req, res) => {
     } else {
       // Create a new category if it doesn't exist
       const newCategory = new Category({
-        idCategory: '100',
+      
         strCategory: category,
         // Add additional fields here if needed
       });
@@ -151,6 +151,59 @@ const createRecipe = async (req, res) => {
     res.status(500).json({ msg: 'Server Error' });
   }
 };
+
+const updateRecipe = async (req, res) => {
+  try {
+    // Extract recipe data from request body
+    const { recipeid, strMeal, category, strArea, strInstructions, strMealThumb, strTags, strYoutube, ingredients, userId } = req.body;
+    
+    // Check if the category exists
+    let categoryId;
+    const existingCategory = await Category.findOne({ strCategory: category });
+    if (existingCategory) {
+      categoryId = existingCategory._id;
+    } else {
+      // Create a new category if it doesn't exist
+      const newCategory = new Category({
+        strCategory: category,
+        // Add additional fields here if needed
+      });
+      const savedCategory = await newCategory.save();
+      categoryId = savedCategory._id;
+    }
+
+    // Check if the provided recipe ID is valid
+    if (!recipeid) {
+      return res.status(400).json({ msg: 'Invalid recipe ID' });
+    }
+    
+    // Check if the recipe exists
+    const existingRecipe = await Recipe.findById(recipeid);
+    if (!existingRecipe) {
+      return res.status(404).json({ msg: 'Recipe not found' });
+    }
+
+    // Update the recipe object with new data
+    existingRecipe.strMeal = strMeal;
+    existingRecipe.category = categoryId;
+    existingRecipe.strArea = strArea;
+    existingRecipe.strInstructions = strInstructions;
+    existingRecipe.strMealThumb = strMealThumb;
+    existingRecipe.strTags = strTags;
+    existingRecipe.strYoutube = strYoutube;
+    existingRecipe.ingredients = ingredients;
+    existingRecipe.dateModified = new Date(); // Set the date modified
+
+    // Save the updated recipe to the database
+    const updatedRecipe = await existingRecipe.save();
+
+    res.status(200).json(updatedRecipe); // Return the updated recipe as JSON response
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ msg: 'Server Error' });
+  }
+};
+
 
 
 
@@ -197,7 +250,7 @@ const getRecentRecipes = async (req, res) => {
   
   
 
-module.exports = { likeRecipe, dislikeRecipe ,getRecentRecipes,getMostLikedRecipes,createRecipe};
+module.exports = { likeRecipe, dislikeRecipe ,getRecentRecipes,getMostLikedRecipes,createRecipe,updateRecipe};
 
 
 
