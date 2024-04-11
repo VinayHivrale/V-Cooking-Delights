@@ -30,7 +30,7 @@ const Comment = ({ comment }) => {
   };
 
   return (
-    <div key={comment._id} className="bg-gray-100 p-4 rounded-lg mb-2">
+    <div key={comment._id} className="bg-[#FFF3EF] border-l-4 border-pink-300 rounded-md  p-4  mb-2">
       {isEditing ? (
         <div className="">
           <TextField

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import axios from 'axios';
+import RecipeItem from '../components/RecipeItem';
 
 
 import Navbar from '../components/Navbar';
@@ -59,18 +60,18 @@ const Dashboard = () => {
 
         // Fetch recently uploaded recipes
         const responseRecipes = await axios.get('http://localhost:3000/api/v1/recipe/recentRecipes');
-  console.log("recently uploaded ",responseRecipes);
+        console.log("recently uploaded ", responseRecipes);
         // Extract recent recipes from the response
         const recentRecipes = responseRecipes.data.recentRecipes;
         setRecentRecipes(recentRecipes);
 
         const responseMostLikedRecipes = await axios.get('http://localhost:3000/api/v1/recipe/most-liked');
         const mostLikedRecipes = responseMostLikedRecipes.data.sortedRecipes;
-    
+
         // Set the state with the most liked recipes
         setMostLikedRecipes(mostLikedRecipes);
         // Set the state with the recent recipes
-        
+
       } catch (error) {
         console.error('Error fetching data:', error.message);
       }
@@ -90,16 +91,16 @@ const Dashboard = () => {
           </div>
           <h1 className='text-5xl  font-bold p-4 text-center hover:scale-90 duration-150  transition hover:bg-green-300 rounded-full'> Explore Categories</h1>
           <div className="grid grid-cols-1 mt-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
-  {categories.map((recipe, index) => (
-    <RecipeCard
-      key={index}
-      recipeId={recipe._id}
-      title={recipe.strCategory}
-      image={recipe.strCategoryThumb}
-      description={recipe.strCategoryDescription ? recipe.strCategoryDescription.substring(0, 300) : ''}
-    />
-  ))}
-</div>
+            {categories.map((recipe, index) => (
+              <RecipeCard
+                key={index}
+                recipeId={recipe._id}
+                title={recipe.strCategory}
+                image={recipe.strCategoryThumb}
+                description={recipe.strCategoryDescription ? recipe.strCategoryDescription.substring(0, 300) : ''}
+              />
+            ))}
+          </div>
 
           <h1 className='text-5xl  font-bold p-4 my-8 text-center hover:scale-90 duration-150  transition hover:bg-green-300 rounded-full'> Explore Areas</h1>
           <div className="card-container">
@@ -120,27 +121,29 @@ const Dashboard = () => {
           <h1 className='text-5xl font-bold p-4 text-center hover:scale-90 duration-150 transition hover:bg-green-300 rounded-full'> Explore Recently Uploaded</h1>
           <div className="grid grid-cols-1 mt-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
             {recentRecipes.map((recipe, index) => (
-              <RecipeCard
-                key={index}
-                recipeId={recipe._id}
-                title={recipe.strMeal}
-                image={recipe.strMealThumb}
-                description={recipe.strInstructions.substring(0, 300)}
-              />
+              <Link key={recipe._id} to={`/recipes/${recipe._id}`}>
+                <RecipeItem
+                  key={recipe._id} // Make sure to provide a unique key prop
+                  recipe={recipe}
+                  onLike={0}
+                  onDislike={0}
+                />
+              </Link>
             ))}
           </div>
           <h1 className='text-5xl font-bold p-4 text-center hover:scale-90 duration-150 transition hover:bg-green-300 rounded-full'> Most Liked Recipes</h1>
-  <div className="grid grid-cols-1 mt-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
-    {mostLikedRecipes.map((recipe, index) => (
-      <RecipeCard
-        key={index}
-        recipeId={recipe._id}
-        title={recipe.strMeal}
-        image={recipe.strMealThumb}
-        description={recipe.strInstructions.substring(0, 300)}
-      />
-    ))}
-  </div>
+          <div className="grid grid-cols-1 mt-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
+            {mostLikedRecipes.map((recipe, index) => (
+              <Link key={recipe._id} to={`/recipes/${recipe._id}`}>
+                <RecipeItem
+                  key={recipe._id} // Make sure to provide a unique key prop
+                  recipe={recipe}
+                  onLike={0}
+                  onDislike={0}
+                />
+              </Link>
+            ))}
+          </div>
         </div>
         <Footer />
       </div>
@@ -149,4 +152,4 @@ const Dashboard = () => {
   )
 }
 
-export default Dashboard
+export default Dashboard;

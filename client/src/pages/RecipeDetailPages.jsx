@@ -24,13 +24,17 @@ const RecipeDetailPage = () => {
   const [userData, setUserData] = useState({});
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
+  
 
 
   const fetchComments = async () => {
     try {
       const response = await axios.get(`http://localhost:3000/api/v1/comment/${id}`);
       setComments(response.data.comments);
+      
+      console.log("Comment dfgdfgdghdghfghfghfghfghfghfgh");
       console.log(response.data.comments);
+
     } catch (error) {
       console.error('Error fetching comments:', error);
     }
@@ -123,6 +127,7 @@ const RecipeDetailPage = () => {
   }, [id, token, userData.id, isLiked, isDisliked]);
 
   useEffect(() => {
+    console.log("useeffect is riunninfered");
     fetchComments();
   }, []);
 
@@ -306,7 +311,7 @@ const RecipeDetailPage = () => {
                 </thead>
                 <tbody>
                   {recipe.ingredients.map((ingredient, index) => (
-                    <tr className="+++++++++++++" key={index}>
+                    <tr className="hover:bg-pink-400" key={index}>
                       <td className="border border-gray-400 p-2">
                         {ingredient.ingredient}
                       </td>
@@ -333,7 +338,7 @@ const RecipeDetailPage = () => {
 
         {/* comment section ------------------------------ */}
         <div className="mt-8" style={{ width: "80%", margin: "auto" }}>
-          <h2 className="text-2xl font-semibold mb-4">Comments</h2>
+          <h2 className="text-2xl font-semibold py-6">{comments.length} Comments</h2>
 
           {/* Input field for entering new comment */}
           <div className="flex mb-4">

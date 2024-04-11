@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom'; // Import Link from React Router
 
-const RecipeCard = ({ recipeId, title, image, description }) => {
+const RecipeCard = ({recipeId, title, image, description }) => {
   return (
     <div className="col flex justify-center cursor-pointer">
       <Link to={`/recipes/category/${recipeId}`} className="block w-full h-full">
