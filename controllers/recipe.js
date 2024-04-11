@@ -111,7 +111,7 @@ const createRecipe = async (req, res) => {
   try {
     // Extract recipe data from request body
     const { strMeal, category, strArea, strInstructions, strMealThumb, strTags, strYoutube, ingredients, userId } = req.body;
-    console.log(strMeal, category);
+    
     // Check if the category exists
     let categoryId;
     const existingCategory = await Category.findOne({ strCategory: category });
@@ -120,14 +120,11 @@ const createRecipe = async (req, res) => {
     } else {
       // Create a new category if it doesn't exist
       const newCategory = new Category({
-      
         strCategory: category,
-        // Add additional fields here if needed
       });
       const savedCategory = await newCategory.save();
       categoryId = savedCategory._id;
     }
-    console.log(strMeal, category);
 
     // Create a new recipe object
     const newRecipe = new Recipe({
@@ -145,12 +142,21 @@ const createRecipe = async (req, res) => {
     // Save the new recipe to the database
     const savedRecipe = await newRecipe.save();
 
+    // Update the user object with the new recipe
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ msg: 'User not found' });
+    }
+    user.recipesCreated.push(savedRecipe._id); // Push the ID of the saved recipe
+    await user.save();
+
     res.status(201).json(savedRecipe); // Return the saved recipe as JSON response
   } catch (error) {
     console.error(error);
     res.status(500).json({ msg: 'Server Error' });
   }
 };
+
 
 const updateRecipe = async (req, res) => {
   try {

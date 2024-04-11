@@ -1,4 +1,3 @@
-
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { Link, useNavigate } from 'react-router-dom';
@@ -9,6 +8,7 @@ import axios from 'axios';
 const AboutUsPage = () => {
   const [token, setToken] = useState(JSON.parse(localStorage.getItem("auth")) || "");
   const [data,setData]=useState({});
+  // const[userId,setUserId] = useState();
   const navigate = useNavigate();
   const veification = async () => {
 
@@ -21,6 +21,8 @@ const AboutUsPage = () => {
     try {
       const response = await axios.get("http://localhost:3000/api/v1/dashboard", axiosConfig);
        setData({msg: response.data.msg })
+      //  setUserId(response.data.id)
+       
 
     } catch (error) {
       toast.error(error.message);
@@ -40,8 +42,7 @@ const AboutUsPage = () => {
 
   return (
     <div>
-        <Navbar isLoggedIn={token !== ""} userName={data.msg} />
-     
+    <Navbar isLoggedIn={token !== ""} userName={data.msg} />
       <div className="container mx-auto mt-24">
         <h1 className="text-4xl font-semibold mb-4">Welcome to Cooking Delights</h1>
         <p className="text-lg mb-4">

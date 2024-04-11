@@ -7,8 +7,6 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-
-
 const Login = () => {
   const [ showPassword, setShowPassword ] = useState(false);
   const navigate = useNavigate();

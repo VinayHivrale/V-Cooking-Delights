@@ -13,6 +13,8 @@ import Hero from '../components/Hero';
 const Dashboard = () => {
 
   const [categories, setCategories] = useState([]);
+  const[userId,setUserId] = useState();
+
   const [token, setToken] = useState(JSON.parse(localStorage.getItem("auth")) || "");
   const [data, setData] = useState({});
   const navigate = useNavigate();

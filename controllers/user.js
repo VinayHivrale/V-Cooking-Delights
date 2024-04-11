@@ -82,8 +82,8 @@ const login = async (req, res) => {
 
 const dashboard = async (req, res) => {
  
-  // console.log("dashboard madhe user",req.user);
-
+   console.log("dashboard madhe user",req.user);
+   
   res.status(200).json({
     msg: `Hello, ${req.user.name}`,
     isLoggedin: true,
@@ -175,6 +175,32 @@ const searchRecipes = async (req, res) => {
   }
 };
 
+const getUserProfileData = async (req, res) => {
+  let userId = req.user.id
+  // Trim the userId to remove any leading or trailing whitespace and newline characters
+  userId = userId.trim();
+
+  try {
+    // Retrieve user data and populate the createdRecipes and likedRecipes fields
+    const userData = await User.findById(userId)
+      .select('-password') // Exclude the password field
+      .populate('recipesCreated') // Populate only specific fields of createdRecipes
+      .populate('likedRecipes');
+
+    if (!userData) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.json(userData);
+    console.log(userData);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server Error' });
+  }
+}
+
+
+
 
 module.exports = {
   login,
@@ -187,5 +213,6 @@ module.exports = {
   getAllCategories,
   fetchAreasData,
   fetchAreasData,
-  getUser
+  getUser,
+  getUserProfileData
 };

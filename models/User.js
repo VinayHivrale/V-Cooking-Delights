@@ -24,11 +24,21 @@ const UserSchema = new mongoose.Schema({
         required: [true, 'Please provide password'],
         minlength: 3
     },
+    role: {
+        type: String,
+        required: true,
+        enum: ['user', 'admin'], // Assuming two roles: 'user' and 'admin'
+        default: 'user' // Default role for new users
+    },
     likedRecipes: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Recipe'
     }],
     dislikedRecipes: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Recipe'
+    }],
+    recipesCreated: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Recipe'
     }]
