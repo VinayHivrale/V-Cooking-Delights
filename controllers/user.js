@@ -82,7 +82,7 @@ const login = async (req, res) => {
 
 const dashboard = async (req, res) => {
  
-  console.log("dashboard madhe user",req.user);
+  // console.log("dashboard madhe user",req.user);
 
   res.status(200).json({
     msg: `Hello, ${req.user.name}`,

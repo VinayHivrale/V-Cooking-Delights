@@ -26,6 +26,7 @@ const likeRecipe = async (req, res) => {
 
         if (alreadyLiked) {
             // User already liked the recipe, remove like
+            console.log("alraedy like.....",alreadyLiked);
             recipe.likes = recipe.likes.filter(like => like.user.toString() !== userId);
             user.likedRecipes = user.likedRecipes.filter(likedRecipe => likedRecipe.toString() !== recipeId);
         } else {
@@ -33,11 +34,13 @@ const likeRecipe = async (req, res) => {
             recipe.likes.push({ user: userId });
             // Remove dislike if the user disliked the recipe before
             if (alreadyDisliked) {
+               console.log(alreadyDisliked);
                 recipe.dislikes = recipe.dislikes.filter(dislike => dislike.user.toString() !== userId);
                 user.dislikedRecipes = user.dislikedRecipes.filter(dislikedRecipe => dislikedRecipe.toString() !== recipeId);
             }
             // Add recipe to user's likedRecipes array
             if (!user.likedRecipes.includes(recipeId)) {
+                console.log("............--------- calling the like function ...")
                 user.likedRecipes.push(recipeId);
             }
         }
@@ -70,17 +73,24 @@ const dislikeRecipe = async (req, res) => {
         console.log("alredy disliked",alreadyDisliked);
         if (alreadyDisliked) {
             // User already disliked the recipe, remove dislike
+            console.log("already disliked....",alreadyDisliked)
             recipe.dislikes = recipe.dislikes.filter(dislike => dislike.user.toString() !== userId);
             user.dislikedRecipes = user.dislikedRecipes.filter(dislikedRecipe => dislikedRecipe.toString() !== recipeId);
         } else {
             // Add dislike if the user didn't dislike the recipe before
+
             recipe.dislikes.push({ user: userId });
+
             // Remove like if the user liked the recipe before
+
             if (alreadyLiked) {
+                console.log(alreadyLiked);
                 recipe.likes = recipe.likes.filter(like => like.user.toString() !== userId);
                 user.likedRecipes = user.likedRecipes.filter(likedRecipe => likedRecipe.toString() !== recipeId);
             }
+
             // Add recipe to user's dislikedRecipes array
+
             if (!user.dislikedRecipes.includes(recipeId)) {
                 user.dislikedRecipes.push(recipeId);
             }

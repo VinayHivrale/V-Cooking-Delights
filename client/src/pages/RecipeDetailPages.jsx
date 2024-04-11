@@ -50,7 +50,7 @@ const RecipeDetailPage = () => {
 
         const liked = recipeData.likes.some(like => like.user.toString() === userData.id);
         const disliked = recipeData.dislikes.some(dislike => dislike.user.toString() === userData.id);
-
+        console.log(liked,disliked); 
         setIsLiked(liked);
         setIsDisliked(disliked);
         setRecipe(recipeData);
@@ -68,8 +68,9 @@ const RecipeDetailPage = () => {
   const handleLike = async () => {
     try {
       if (isLiked) {
+        
         // If the user has already liked the recipe, remove the like
-        await axios.post(`http://localhost:3000/api/v1/recipe/dislike/${recipe._id}`, {}, {
+        await axios.post(`http://localhost:3000/api/v1/recipe/like/${recipe._id}`, {}, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -96,7 +97,7 @@ const RecipeDetailPage = () => {
     try {
       if (isDisliked) {
         // If the user has already disliked the recipe, remove the dislike
-        await axios.post(`http://localhost:3000/api/v1/recipe/like/${recipe._id}`, {}, {
+        await axios.post(`http://localhost:3000/api/v1/recipe/dislike/${recipe._id}`, {}, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
