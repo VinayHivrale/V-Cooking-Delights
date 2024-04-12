@@ -3,7 +3,7 @@ import { MdMoreVert } from "react-icons/md";
 import TextField from "@mui/material/TextField";
 import axios from "axios";
 
-const Comment = ({ comment, fetchComments }) => {
+const Comment = ({ comment, fetchComments,userData }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [editContent, setEditContent] = useState(comment.content);
@@ -109,7 +109,9 @@ const Comment = ({ comment, fetchComments }) => {
               {new Date(comment.createdAt).toLocaleString()}
             </p>
           </div>
-          <div className="relative">
+          {
+            comment.user._id === userData.id && 
+            <div className="relative">
             <MdMoreVert
               className="cursor-pointer"
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
@@ -132,6 +134,7 @@ const Comment = ({ comment, fetchComments }) => {
               </div>
             )}
           </div>
+          }
         </div>
       )}
     </div>

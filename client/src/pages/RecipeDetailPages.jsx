@@ -122,8 +122,8 @@ const RecipeDetailPage = () => {
   }, [id, token, userData.id, isLiked, isDisliked]);
 
   useEffect(() => {
-    console.log("useeffect is nunning ...");
     fetchComments();
+    console.log("useeffect is nunning ...", comments);
   }, []);
 
   const handleLike = async () => {
@@ -356,7 +356,7 @@ const RecipeDetailPage = () => {
 
           {/* Display existing comments */}
           {comments.map((comment) => (
-            <Comment key={comment._id} comment={comment}  fetchComments={fetchComments}/>
+            <Comment key={comment._id} comment={comment} userData={userData}  fetchComments={fetchComments}/>
           ))}
         </div>
       </div>
