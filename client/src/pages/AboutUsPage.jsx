@@ -56,7 +56,7 @@ const AboutUsPage = () => {
         <div className="flex items-center p-6 bg-green-200   duration-75 transition-all shadow-lg  rounded-lg mb-4">
           <img src="../src/assets/vinay.png" alt="Cook Vinay Hivrale" className="rounded-full h-40 w-54 mr-4" />
           <div>
-            <h2 className="text-3xl font-semibold mb-2">Meet Cook <span className='text-indigo-800 rounded-md p-2 duration-150 transition hover:translate-y-6   hover:text-black'>Vinay Hivrale
+            <h2 className="text-3xl font-semibold mb-2">Meet Cock <span className='text-indigo-800 rounded-md p-2 duration-150 transition hover:translate-y-6   hover:text-black'>Vinay Hivrale
               </span> </h2>
             <p className="text-lg">
               "With a spatula in one hand and a sprinkle of magic in the other, Cook Vinay Hivrale is the heart and soul 

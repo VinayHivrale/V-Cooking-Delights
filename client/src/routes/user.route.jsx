@@ -24,15 +24,14 @@ const Userroute = () => {
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="logout" element={<Logout />} />
         <Route path="home" element={<Home />} />
-        <Route path="Aboutus" element={<AboutUsPage />} />
+        <Route path="/Aboutus" element={<AboutUsPage />} />
         <Route path="recipes" element={<RecipePage  type="recipes"/>} />
         <Route path="recipes/search/:search" element={<RecipePage type="search"/>} />
         <Route path="recipes/areas/:area" element={<RecipePage type="area" />} /> 
         <Route path="recipes/category/:category" element={<RecipePage type="category" />} /> 
         <Route path="recipes/:id" element={<RecipeDetailPages />} /> 
         <Route path="user/createrecipe" element={<Recipeform/>} />
-        <Route path="user/profile" element={<UserProfile/>} />
-
+        <Route path="/user/profile" element={<UserProfile/>} />
         <Route path="user/updaterecipe" element={<UpdateRecipeForm id="6617b93348254ed6281e967c"/>} />
       </Route>
     </Routes>

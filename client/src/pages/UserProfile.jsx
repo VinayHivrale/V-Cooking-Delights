@@ -1,98 +1,157 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import RecipeItem from '../components/RecipeItem';
-import { Link, useNavigate } from 'react-router-dom';
-
-
-
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import RecipeItem from "../components/RecipeItem";
+import { Link } from "react-router-dom";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import Navbar from "../components/Navbar";
 
 const UserProfile = () => {
-    const [user, setUser] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const [token, setToken] = useState(JSON.parse(localStorage.getItem("auth")) || "");
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const token = JSON.parse(localStorage.getItem("auth")) || "";
 
-    useEffect(() => {
-        const fetchUserData = async () => {
-            setLoading(true);
+ 
+  useEffect(() => {
+    const fetchUserData = async () => {
+      setLoading(true);
 
-            let axiosConfig = {
-                headers: {
-                  'Authorization': `Bearer ${token}`
-                }
-              };
-            try {
-                const response = await axios.get(`http://localhost:3000/api/v1/profile`,axiosConfig);
-                setUser(response.data);
-            } catch (err) {
-                setError(err.message);
-            } finally {
-                setLoading(false);
-            }
-        };
+      try {
+        const response = await axios.get(
+          "http://localhost:3000/api/v1/profile",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setUser(response.data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-        fetchUserData();
-    }, []);
+    fetchUserData();
+  }, [token]);
 
-    if (loading) return <div>Loading...</div>;
-    if (error) return <div>Error: {error}</div>;
-    if (!user) return <div>No user data found.</div>;
+  const carouselSettings = {
+    dots: false,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+          infinite: true,
+        },
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+    ],
+    nextArrow: (
+      <button className="absolute top-1/2 right-0 transform -translate-y-1/2 focus:outline-none z-10">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-8 w-8 text-white rounded-full bg-green-500 p-2 shadow-lg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M9 5l7 7-7 7"
+          />
+        </svg>
+      </button>
+    ),
+    prevArrow: (
+      <button className="absolute top-1/2 left-0 transform -translate-y-1/2 focus:outline-none z-10">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-8 w-8 text-white rounded-full bg-green-500 p-2 shadow-lg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M15 19l-7-7 7-7"
+          />
+        </svg>
+      </button>
+    ),
+  };
 
-    return (
-        <div className="max-w-2xl mx-auto p-8 bg-white rounded-lg shadow-lg">
-            <h2 className="text-2xl font-bold mb-4">User Profile</h2>
-            <p className="mb-2"><strong>Name:</strong> {user.name}</p>
-            <p className="mb-2"><strong>Email:</strong> {user.email}</p>
-            
-    
-            {user.recipesCreated.length > 0 && (
-                <div>
-                    <h3 className="text-xl font-semibold mb-2">Recipes Created</h3>
-                    <ul>
-                        {user.recipesCreated.map(recipe => (
-                             <Link key={recipe._id} to={`/recipes/${recipe._id}`}>
-                             <RecipeItem
-                               key={recipe._id} // Make sure to provide a unique key prop
-                               recipe={recipe}
-                               onLike={0}
-                               onDislike={0}
-                             />
-                           </Link>
-                        ))}
-                    </ul>
-                </div>
-            )}
-    
-            {user.recipesCreated.length === 0 && (
-                <p>No recipes created yet.</p>
-            )}
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
+  if (!user) return <div>No user data found.</div>;
 
-{user.likedRecipes.length > 0 && (
-                <div>
-                    <h3 className="text-xl font-semibold mb-2">Recipes Liked</h3>
-                    <ul>
-                        {user.likedRecipes.map(recipe => (
-                             <Link key={recipe._id} to={`/recipes/${recipe._id}`}>
-                             <RecipeItem
-                               key={recipe._id} 
-                               recipe={recipe}
-                               onLike={0}
-                               onDislike={0}
-                             />
-                           </Link>
-                        ))}
-                    </ul>
-                </div>
-            )}
-    
-            {user.likedRecipes.length === 0 && (
-                <p>No recipes Liked yet.</p>
-            )}
+  return (
+    <div className="mx-auto w-full p-8 bg-white rounded-lg shadow-lg">
+       <Navbar isLoggedIn={token !== ""} userName={`Hello ${user.name}`} />
+       <div className="mt-24"></div>
+      <div className="text-center">
+        <h2 className="text-3xl font-bold text-gray-800 mb-4">User Profile</h2>
+        <p className="text-lg text-gray-600 mb-4">
+          <strong>Name:</strong> {user.name}
+        </p>
+        <p className="text-lg text-gray-600 mb-8">
+          <strong>Email:</strong> {user.email}
+        </p>
+      </div>
 
+      <div className="mt-8">
+        <h3 className="text-3xl font-semibold text-gray-800 mb-6">Recipes Created</h3>
+        {user.recipesCreated.length > 0 ? (
+          <Slider className="ml-10 pl-12 mr-10" {...carouselSettings}>
+            {user.recipesCreated.map((recipe) => (
+              <div key={recipe._id} className="px-2">
+                <Link to={`/recipes/${recipe._id}`}>
+                  <RecipeItem recipe={recipe} onLike={0} onDislike={0} />
+                </Link>
+              </div>
+            ))}
+          </Slider>
+        ) : (
+          <p className="text-lg text-gray-600">No recipes created yet.</p>
+        )}
+      </div>
 
-        </div>
-    );
-    
+      <div className="mt-12">
+        <h3 className="text-3xl font-semibold text-gray-800 mb-6">Recipes Liked</h3>
+        {user.likedRecipes.length > 0 ? (
+          <Slider className="ml-10 pl-12 mr-10" {...carouselSettings}>
+            {user.likedRecipes.map((recipe) => (
+              <div key={recipe._id} className="px-2">
+                <Link to={`/recipes/${recipe._id}`}>
+                  <RecipeItem recipe={recipe} onLike={0} onDislike={0} />
+                </Link>
+              </div>
+            ))}
+          </Slider>
+        ) : (
+          <p className="text-lg text-gray-600">No recipes Liked yet.</p>
+        )}
+      </div>
+    </div>
+  );
 };
 
 export default UserProfile;

@@ -6,5 +6,13 @@ module.exports = {
     './src/**/*.js',
     './src/**/*.jsx',
   ],
+  theme: {
+    extend: {
+      fontFamily: {
+        pacifico: ['Pacifico', 'cursive'],
+        astrid: ['Astrid', 'sans-serif'],
+      },
+    },
+  },
   // Other Tailwind CSS configurations...
 };
