@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { MdMoreVert } from "react-icons/md";
 import TextField from "@mui/material/TextField";
 import axios from "axios";
 
-const Comment = ({ comment, fetchComments,userData }) => {
+const Comment = ({ comment, fetchComments, userData }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [editContent, setEditContent] = useState(comment.content);
@@ -24,7 +24,7 @@ const Comment = ({ comment, fetchComments,userData }) => {
   const handleSaveEdit = async () => {
     const content = editContent;
     const commentId = comment._id;
-  
+
     try {
       const response = await axios.put(
         `http://localhost:3000/api/v1/comment`,
@@ -35,46 +35,65 @@ const Comment = ({ comment, fetchComments,userData }) => {
           },
         }
       );
-        console.log("calling the handleSaveEdit", response.data.comment);
+      console.log("calling the handleSaveEdit", response.data.comment);
       if (response.status === 200) {
-        console.log('Comment updated successfully:', response.data.comment);
+        console.log("Comment updated successfully:", response.data.comment);
         fetchComments();
       }
     } catch (error) {
-      console.error('Error updating comment:', error);
+      console.error("Error updating comment:", error);
     }
-  
+
     setIsEditing(false);
     setIsDropdownOpen(false);
   };
-  
- 
+
   const handleDelete = async () => {
     const commentId = comment._id;
     try {
-        const response = await axios.delete(
-            `http://localhost:3000/api/v1/comment/${commentId}`, 
-            {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            }
-        );
-
-        if (response.status === 200) {
-            console.log("Comment deleted successfully");
-            fetchComments();
-        } else {
-            console.error("Failed to delete comment:", response.data.error);
+      const response = await axios.delete(
+        `http://localhost:3000/api/v1/comment/${commentId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
-    } catch (error) {
-        console.error("Error deleting comment:", error.message);
-    }
-};
+      );
 
+      if (response.status === 200) {
+        console.log("Comment deleted successfully");
+        fetchComments();
+      } else {
+        console.error("Failed to delete comment:", response.data.error);
+      }
+    } catch (error) {
+      console.error("Error deleting comment:", error.message);
+    }
+  };
+
+  // logic of handling outside close menu ------------------------------------------ |||||| ------------------------------------
+  let menuRef = useRef();
+
+  useEffect(() => {
+    let handler =  (event) => {
+      if (!menuRef.current.contains(event.target)){
+        setIsDropdownOpen(false);
+      }
+    }
+    document.addEventListener("mousedown",handler);
+
+    return () => {
+      document.removeEventListener("mousedown",handler)
+    }
+  });
+
+  // ---------------------------------------------------------------- ||||| ---------------------------------------------------
 
   return (
-    <div key={comment._id} className="bg-[#FFF3EF] border-l-4 border-pink-300 rounded-md  p-4  mb-2">
+    <div
+      key={comment._id}
+      className="bg-[#FFF3EF] border-l-4 border-pink-300 rounded-md  p-4  mb-2"
+    >
       {isEditing ? (
         <div className="">
           <TextField
@@ -85,7 +104,7 @@ const Comment = ({ comment, fetchComments,userData }) => {
             fullWidth
             autoFocus
           />
-          <div className="mt-1"> 
+          <div className="mt-1">
             <button
               className="bg-gray-300 text-gray-800 px-4 py-1 rounded-lg hover:bg-gray-400"
               onClick={handleCancelEdit}
@@ -109,32 +128,31 @@ const Comment = ({ comment, fetchComments,userData }) => {
               {new Date(comment.createdAt).toLocaleString()}
             </p>
           </div>
-          {
-            comment.user._id === userData.id && 
-            <div className="relative">
-            <MdMoreVert
-              className="cursor-pointer"
-              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-            />
-            {/* Dropdown menu */}
-            {isDropdownOpen && (
-              <div className="absolute mt-1 w-24 bg-white shadow-lg rounded-lg">
-                <button
-                  className="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 w-full text-left"
-                  onClick={handleEdit}
-                >
-                  Edit
-                </button>
-                <button
-                  className="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 w-full text-left"
-                  onClick={handleDelete}
-                >
-                  Delete
-                </button>
-              </div>
-            )}
-          </div>
-          }
+          {comment.user._id === userData.id && (
+            <div ref={menuRef} className="relative">
+              <MdMoreVert
+                className="cursor-pointer"
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+              />
+              {/* Dropdown menu */}
+              {isDropdownOpen && (
+                <div className="absolute mt-1 w-24 bg-white shadow-lg rounded-lg">
+                  <button
+                    className="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 w-full text-left"
+                    onClick={handleEdit}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    className="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 w-full text-left"
+                    onClick={handleDelete}
+                  >
+                    Delete
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       )}
     </div>

@@ -356,7 +356,7 @@ const RecipeDetailPage = () => {
 
           {/* Display existing comments */}
           {comments.map((comment) => (
-            <Comment key={comment._id} comment={comment} userData={userData}  fetchComments={fetchComments}/>
+            <Comment key={comment._id} comment={comment} userData={userData} fetchComments={fetchComments}/>
           ))}
         </div>
       </div>
