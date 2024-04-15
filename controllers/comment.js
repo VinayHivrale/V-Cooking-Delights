@@ -120,17 +120,22 @@ const getAllComments = async (req, res) => {
       return res.status(404).json({ error: 'Recipe not found' });
     }
 
-    // Check if there are no comments
-    if (recipe.comments.length === 0) {
+    // Filter out comments with null user
+    const filteredComments = recipe.comments.filter(comment => comment.user !== null);
+
+    // Check if there are no comments after filtering
+    if (filteredComments.length === 0) {
       return res.status(200).json({ message: 'No comments found for this recipe', comments: [] });
     }
 
-    res.status(200).json({ comments: recipe.comments });
+    console.log("consoling the comments", filteredComments);
+    res.status(200).json({ comments: filteredComments });
   } catch (error) {
     console.error('Error fetching comments:', error);
     res.status(500).json({ error: 'Failed to fetch comments' });
   }
 };
+
 
 
 module.exports = {

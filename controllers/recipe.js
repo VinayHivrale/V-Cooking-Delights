@@ -2,7 +2,7 @@
 // Import necessary models
 const Recipe = require('../models/Recipe');
 const User = require('../models/User');
-
+const Comment = require('../models/Comment');
 const Category = require('../models/Categories');
 
 
@@ -212,7 +212,51 @@ const updateRecipe = async (req, res) => {
 
 
 
+const deleteRecipe = async (req, res) => {
+  // Step 1: Extract the recipe ID from the request parameters
+  const recipeId = req.params.recipeId;
 
+  try {
+      // Step 2: Check if the recipe exists
+      const recipe = await Recipe.findById(recipeId);
+      if (!recipe) {
+          // If the recipe doesn't exist, return a 404 error
+          return res.status(404).json({ message: 'Recipe not found' });
+      }
+
+      // Step 3: Optionally, check if the user has permission to delete the recipe
+      // For example, check if the user is the creator of the recipe or has admin privileges
+
+      // Step 4: Extract the user ID from the request (assuming it's provided in the request body)
+     
+          let userId = req.user.id
+     // Trim the userId to remove any leading or trailing whitespace and newline characters
+           userId = userId.trim();
+
+      // Step 5: Delete the recipe ID from the user's 'recipesCreated' array
+      await User.findByIdAndUpdate(userId, { $pull: { recipesCreated: recipeId } });
+
+      // Step 6: Delete the recipe ID from the 'likedRecipes' array of all users who liked this recipe
+      await User.updateMany({ likedRecipes: recipeId }, { $pull: { likedRecipes: recipeId } });
+
+      // Step 7: Delete the recipe ID from the 'dislikedRecipes' array of all users who disliked this recipe
+      await User.updateMany({ dislikedRecipes: recipeId }, { $pull: { dislikedRecipes: recipeId } });
+
+      // Step 8: Delete the comments associated with the recipe
+      // Assuming the Comment model has a field 'recipe' referencing the recipe ID
+      await Comment.deleteMany({ recipe: recipeId });
+
+      // Step 9: Finally, delete the recipe itself
+      await Recipe.findByIdAndDelete(recipeId);
+      
+      // Step 10: Send a success response if the recipe is deleted successfully
+      res.status(200).json({ message: 'Recipe deleted successfully' });
+  } catch (error) {
+      // Step 11: If an error occurs during deletion, handle it and send an error response
+      console.error('Error deleting recipe:', error);
+      res.status(500).json({ message: 'Internal server error' });
+  }
+};
   
 
 const getRecentRecipes = async (req, res) => {
@@ -256,7 +300,7 @@ const getRecentRecipes = async (req, res) => {
   
   
 
-module.exports = { likeRecipe, dislikeRecipe ,getRecentRecipes,getMostLikedRecipes,createRecipe,updateRecipe};
+module.exports = { likeRecipe, dislikeRecipe ,getRecentRecipes,getMostLikedRecipes,createRecipe,updateRecipe, deleteRecipe};
 
 
 

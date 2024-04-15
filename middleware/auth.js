@@ -20,7 +20,7 @@ const authenticationMiddleware = async (req, res, next) => {
    //  console.log("user is",req.user);
      next()
   } catch (error) {
-    console.log("me ......")
+    console.log("me delete ......");
     return res.status(401).json({msg: "Unauthorized. Please add validhhh token"});
   }
 }

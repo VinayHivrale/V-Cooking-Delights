@@ -32,7 +32,7 @@ const Userroute = () => {
         <Route path="recipes/:id" element={<RecipeDetailPages />} /> 
         <Route path="user/createrecipe" element={<Recipeform/>} />
         <Route path="/user/profile" element={<UserProfile/>} />
-        <Route path="user/updaterecipe" element={<UpdateRecipeForm id="6617b93348254ed6281e967c"/>} />
+        <Route path="user/updaterecipe/:id" element={<UpdateRecipeForm/>} />
       </Route>
     </Routes>
   );

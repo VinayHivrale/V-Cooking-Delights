@@ -43,7 +43,7 @@ const AboutUsPage = () => {
   return (
     <div>
     <Navbar isLoggedIn={token !== ""} userName={data.msg} />
-      <div className="container mx-auto mt-24">
+      <div className="container mx-auto px-10 mt-24">
         <h1 className="text-4xl font-semibold mb-4">Welcome to Cooking Delights</h1>
         <p className="text-lg mb-4">
           "Where culinary dreams take flight and flavors dance on your palate."
@@ -53,20 +53,6 @@ const AboutUsPage = () => {
           From the sizzle of a hot skillet to the aroma of freshly baked bread, our pages are alive with the essence of 
           culinary artistry.
         </p>
-        <div className="flex items-center p-6 bg-green-200   duration-75 transition-all shadow-lg  rounded-lg mb-4">
-          <img src="../src/assets/vinay.png" alt="Cook Vinay Hivrale" className="rounded-full h-40 w-54 mr-4" />
-          <div>
-            <h2 className="text-3xl font-semibold mb-2">Meet Cock <span className='text-indigo-800 rounded-md p-2 duration-150 transition hover:translate-y-6   hover:text-black'>Vinay Hivrale
-              </span> </h2>
-            <p className="text-lg">
-              "With a spatula in one hand and a sprinkle of magic in the other, Cook Vinay Hivrale is the heart and soul 
-              behind Cooking Delights. With years of culinary expertise and a passion for flavors that knows no bounds, 
-              Vinay has dedicated himself to bringing the joy of cooking to homes around the globe. From humble beginnings 
-              in his grandmother's kitchen to gracing the stages of culinary competitions, Vinay's journey is a testament 
-              to the power of food to unite, inspire, and delight."
-            </p>
-          </div>
-        </div>
         <p className="text-lg mb-4">
           "Cooking is not just about nourishment; it's about expression, creativity, and joy."
         </p>

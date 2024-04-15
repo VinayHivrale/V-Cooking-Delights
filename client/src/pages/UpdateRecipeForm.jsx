@@ -3,11 +3,13 @@ import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FaTrash, FaPlus } from "react-icons/fa";
+import { useParams } from "react-router-dom";
 
-const UpdateRecipeForm = ({ id }) => {
+const UpdateRecipeForm = () => {
   const [token, setToken] = useState(
     JSON.parse(localStorage.getItem("auth")) || ""
   );
+  const {id} = useParams();
   const [userData, setUserData] = useState({});
   const [formData, setFormData] = useState({
     recipeid: "",
