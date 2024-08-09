@@ -30,7 +30,7 @@ const Dashboard = () => {
     };
 
     try {
-      const response = await axios.get("http://localhost:3000/api/v1/dashboard", axiosConfig);
+      const response = await axios.get(`${window.location.origin}/api/v1/dashboard`, axiosConfig);
       setData({ msg: response.data.msg })
       console.log("resis", response);
     } catch (error) {
@@ -52,22 +52,22 @@ const Dashboard = () => {
         }
 
         // Fetch categories
-        const responseCategories = await axios.get('http://localhost:3000/api/v1/categories');
+        const responseCategories = await axios.get(`${window.location.origin}/api/v1/categories`);
         setCategories(responseCategories.data.categories);
 
 
         // Fetch areas
-        const responseAreas = await axios.get('http://localhost:3000/api/v1/areas');
+        const responseAreas = await axios.get(`${window.location.origin}/api/v1/areas`);
         setAreas(responseAreas.data);
 
         // Fetch recently uploaded recipes
-        const responseRecipes = await axios.get('http://localhost:3000/api/v1/recipe/recentRecipes');
+        const responseRecipes = await axios.get(`${window.location.origin}/api/v1/recipe/recentRecipes`);
         console.log("recently uploaded ", responseRecipes);
         // Extract recent recipes from the response
         const recentRecipes = responseRecipes.data.recentRecipes;
         setRecentRecipes(recentRecipes);
 
-        const responseMostLikedRecipes = await axios.get('http://localhost:3000/api/v1/recipe/most-liked');
+        const responseMostLikedRecipes = await axios.get(`${window.location.origin}/api/v1/recipe/most-liked`);
         const mostLikedRecipes = responseMostLikedRecipes.data.sortedRecipes;
 
         // Set the state with the most liked recipes

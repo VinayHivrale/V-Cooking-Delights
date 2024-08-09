@@ -29,7 +29,7 @@ const RecipeDetailPage = () => {
     try {
       const content = newComment;
       const response = await axios.post(
-        `http://localhost:3000/api/v1/comment/${id}`,
+        `${window.location.origin}/api/v1/comment/${id}`,
         { content }, 
         {
           headers: {
@@ -51,7 +51,7 @@ const RecipeDetailPage = () => {
   
   const fetchComments = async () => {
     try {
-      const response = await axios.get(`http://localhost:3000/api/v1/comment/${id}`);
+      const response = await axios.get(`${window.location.origin}/api/v1/comment/${id}`);
       setComments(response.data.comments);
 
       console.log(response.data.comments);
@@ -65,7 +65,7 @@ const RecipeDetailPage = () => {
   const fetchUserData = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:3000/api/v1/dashboard",
+        `${window.location.origin}/api/v1/dashboard`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -91,7 +91,7 @@ const RecipeDetailPage = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3000/api/v1/recipes/${id}`,
+          `${window.location.origin}/api/v1/recipes/${id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -131,7 +131,7 @@ const RecipeDetailPage = () => {
       if (isLiked) {
         // If the user has already liked the recipe, remove the like
         await axios.post(
-          `http://localhost:3000/api/v1/recipe/like/${recipe._id}`,
+          `${window.location.origin}/api/v1/recipe/like/${recipe._id}`,
           {},
           {
             headers: {
@@ -143,7 +143,7 @@ const RecipeDetailPage = () => {
       } else {
         // If the user hasn't liked the recipe yet, add the like
         await axios.post(
-          `http://localhost:3000/api/v1/recipe/like/${recipe._id}`,
+          `${window.location.origin}/api/v1/recipe/like/${recipe._id}`,
           {},
           {
             headers: {
@@ -164,7 +164,7 @@ const RecipeDetailPage = () => {
       if (isDisliked) {
         // If the user has already disliked the recipe, remove the dislike
         await axios.post(
-          `http://localhost:3000/api/v1/recipe/dislike/${recipe._id}`,
+          `${window.location.origin}/api/v1/recipe/dislike/${recipe._id}`,
           {},
           {
             headers: {
@@ -176,7 +176,7 @@ const RecipeDetailPage = () => {
       } else {
         // If the user hasn't disliked the recipe yet, add the dislike
         await axios.post(
-          `http://localhost:3000/api/v1/recipe/dislike/${recipe._id}`,
+          `${window.location.origin}/api/v1/recipe/dislike/${recipe._id}`,
           {},
           {
             headers: {

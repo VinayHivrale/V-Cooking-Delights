@@ -20,45 +20,42 @@ const Navbar = ({ isLoggedIn, userName }) => {
       <div className="container px-10 w-full flex rounded-md  justify-evenly items-center bg-white opacity-80 backdrop-blur-lg">
         {/* Logo and Brand Name */}
         <div>
-          <a
-            href="http://localhost:5173/dashboard"
-            className="text-lg font-bold flex items-center"
-          >
+          <Link to="/dashboard" className="text-lg font-bold flex items-center">
             <img
               src="https://th.bing.com/th/id/OIG1.18HHd7VZFlfizIjzS600?pid=ImgGn"
               alt="Cooking Delights Logo"
               className="mr-2 rounded-full border border-5 border-zinc-500 shadow-sm  h-10 w-10 bg-white"
             />
             <h1>Cooking Delights</h1>
-          </a>
+          </Link>
         </div>
 
         {/* Menu Items */}
         <div className="ml-32">
           <ul className="flex gap-6">
             <li>
-              <a
-                href="http://localhost:5173/dashboard"
+              <Link
+                to="/dashboard"
                 className="px-2 font-semibold py-1 rounded-lg hover:bg-green-300 hover:text-black"
               >
                 Home
-              </a>
+              </Link>
             </li>
             <li>
-              <a
-                href="http://localhost:5173/recipes"
-                className="px-2 font-semibold  py-1 rounded-lg hover:bg-green-300"
+              <Link
+                to="/recipes"
+                className="px-2 font-semibold py-1 rounded-lg hover:bg-green-300"
               >
                 Recipes
-              </a>
+              </Link>
             </li>
             <li>
-              <a
-                href="http://localhost:5173/aboutus"
+              <Link
+                to="/aboutus"
                 className="px-2 font-semibold py-1 rounded-lg hover:bg-green-300"
               >
                 About Us
-              </a>
+              </Link>
             </li>
           </ul>
         </div>
@@ -77,7 +74,7 @@ const Navbar = ({ isLoggedIn, userName }) => {
               aria-label="Search"
             />
             <button
-              className="-p-4  rounded hover:scale-90 transition duration-75 hover:bg-green-300"
+              className="-p-4 rounded hover:scale-90 transition duration-75 hover:bg-green-300"
               type="submit"
             >
               <FaSearch />
@@ -86,27 +83,26 @@ const Navbar = ({ isLoggedIn, userName }) => {
 
           {/* User Name/Login */}
           {isLoggedIn ? (
-            <Link to='/user/profile'>
+            <Link to="/user/profile">
               {userName?.img ? (
                 <img
                   className="w-12 h-12 rounded-full"
                   src="https://i0.wp.com/www.michigandaily.com/wp-content/uploads/2023/06/Untitled_Artwork-116.png?fit=2400%2C1600&ssl=1"
                   alt="user profile"
-                  srcset=""
                 />
               ) : (
                 <span className="text-gray-900 px-2 font-bold">{userName}</span>
               )}
             </Link>
           ) : (
-            <span className="text-gray-900 font-semibold">Login</span>
+            <Link to="/login" className="text-gray-900 font-semibold">
+              Login
+            </Link>
           )}
-          <div className="bg-red-300 rounded-md px-2 py-1 mx-1 duration- transition-all hover:bg-red-400">
+
+          <div className="bg-red-300 rounded-md px-2 py-1 mx-1 transition-all hover:bg-red-400">
             {isLoggedIn && (
-              <Link
-                to="/logout"
-                className="logout-button text-black font-semibold"
-              >
+              <Link to="/logout" className="logout-button text-black font-semibold">
                 Logout
               </Link>
             )}

@@ -19,7 +19,7 @@ const UserProfile = () => {
   const deleteRecipe = async (recipeId) => {
     try {
       const response = await axios.delete(
-        `http://localhost:3000/api/v1/recipe/${recipeId}`,
+        `${window.location.origin}/api/v1/recipe/${recipeId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -39,7 +39,7 @@ const UserProfile = () => {
 
     try {
       const response = await axios.get(
-        "http://localhost:3000/api/v1/profile",
+        `${window.location.origin}/api/v1/profile`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

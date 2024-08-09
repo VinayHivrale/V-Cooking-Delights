@@ -19,7 +19,7 @@ const AboutUsPage = () => {
     };
 
     try {
-      const response = await axios.get("http://localhost:3000/api/v1/dashboard", axiosConfig);
+      const response = await axios.get(`${window.location.origin}/api/v1/dashboard`, axiosConfig);
        setData({msg: response.data.msg })
       //  setUserId(response.data.id)
        

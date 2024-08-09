@@ -29,7 +29,7 @@ const UpdateRecipeForm = () => {
     const fetchRecipe = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3000/api/v1/recipes/${id}`,
+          `${window.location.origin}/api/v1/recipes/${id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -88,7 +88,7 @@ const UpdateRecipeForm = () => {
     try {
       // Assuming you have an API endpoint to handle recipe update
       const res = await axios.put(
-        `http://localhost:3000/api/v1/recipe/updaterecipe`,
+        `${window.location.origin}/api/v1/recipe/updaterecipe`,
         formData,
         {
           headers: {

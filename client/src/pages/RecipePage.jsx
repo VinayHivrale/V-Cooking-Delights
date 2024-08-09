@@ -26,7 +26,7 @@ const RecipePage = ({ type }) => {
 
     try {
       const response = await axios.get(
-        "http://localhost:3000/api/v1/dashboard",
+        `${window.location.origin}/api/v1/dashboard`,
         axiosConfig
       );
       
@@ -52,7 +52,7 @@ const RecipePage = ({ type }) => {
           },
         };
         const response = await axios.get(
-          "http://localhost:3000/api/v1/recipes",
+          `${window.location.origin}/api/v1/recipes`,
           axiosConfig
         );
 

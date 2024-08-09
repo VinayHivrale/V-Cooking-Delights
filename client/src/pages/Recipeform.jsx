@@ -46,7 +46,7 @@ const RecipeForm = () => {
     try {
       
       
-  const response = await axios.get("http://localhost:3000/api/v1/dashboard", {
+  const response = await axios.get(`${window.location.origin}/api/v1/dashboard`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -54,7 +54,7 @@ const RecipeForm = () => {
       setUserData({ id: response.data.id });
       setFormData({ ...formData, userId: userData.id }); 
       // Assuming you have an API endpoint to handle recipe submission
-      const res = await axios.post('http://localhost:3000/api/v1/recipe/addrecipe', formData); // Updated URL
+      const res = await axios.post(`${window.location.origin}/api/v1/recipe/addrecipe`, formData); // Updated URL
       console.log(res.data); // Handle success response
       // Reset form data after successful submission if needed
       setFormData({

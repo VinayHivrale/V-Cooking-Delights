@@ -27,7 +27,7 @@ const Comment = ({ comment, fetchComments, userData }) => {
 
     try {
       const response = await axios.put(
-        `http://localhost:3000/api/v1/comment`,
+        `${window.location.origin}/api/v1/comment`,
         { content, commentId },
         {
           headers: {
@@ -52,7 +52,7 @@ const Comment = ({ comment, fetchComments, userData }) => {
     const commentId = comment._id;
     try {
       const response = await axios.delete(
-        `http://localhost:3000/api/v1/comment/${commentId}`,
+        `${window.location.origin}/api/v1/comment/${commentId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
