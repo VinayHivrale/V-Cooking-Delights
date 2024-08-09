@@ -116,7 +116,7 @@ const RecipeDetailPage = () => {
         setLoading(false);
       }
     };
-
+    console.log("yahooo");
     fetchData();
     fetchUserData();
   }, [id, token, userData.id, isLiked, isDisliked]);
