@@ -151,7 +151,7 @@ const UserProfile = () => {
       <div
         onClick={() => {
           navigate("/user/createrecipe");
-        }}
+        }}  //om is great
         className="my-10 hover:scale-125 cursor-pointer duration-200 p-3 mx-auto bg-green-200 rounded-full w-10 h-10 flex items-center justify-center"
       >
         <FaPlus />
