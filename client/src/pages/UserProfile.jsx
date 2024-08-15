@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { FaTrash, FaPlus } from "react-icons/fa";
 import axios from "axios";
-import RecipeItem from "../components/RecipeItem";
 import { Link, useNavigate } from "react-router-dom";
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
 import Navbar from "../components/Navbar";
 import { MdEdit } from "react-icons/md";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faThumbsUp, faThumbsDown } from '@fortawesome/free-solid-svg-icons';
+import RecipeItem from "../components/RecipeItem";
 
 const UserProfile = () => {
   const [user, setUser] = useState(null);
@@ -18,36 +17,27 @@ const UserProfile = () => {
 
   const deleteRecipe = async (recipeId) => {
     try {
-      const response = await axios.delete(
-        `${window.location.origin}/api/v1/recipe/${recipeId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      console.log(response.data.message);
+      await axios.delete(`http://localhost:3000/api/v1/recipe/${recipeId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       fetchUserData();
     } catch (error) {
       console.log(error.message);
     }
   };
 
-
   const fetchUserData = async () => {
     setLoading(true);
 
     try {
-      const response = await axios.get(
-        `${window.location.origin}/api/v1/profile`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await axios.get("http://localhost:3000/api/v1/profile", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       setUser(response.data);
-      console.log("vinay ....", response.data);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -56,70 +46,8 @@ const UserProfile = () => {
   };
 
   useEffect(() => {
-    
     fetchUserData();
-  }, [token,]);
-
-  const carouselSettings = {
-    dots: false,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 3,
-    slidesToScroll: 1,
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 1,
-          infinite: true,
-        },
-      },
-      {
-        breakpoint: 600,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
-        },
-      },
-    ],
-    nextArrow: (
-      <button className="absolute top-1/2 right-0 transform -translate-y-1/2 focus:outline-none z-10">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-8 w-8 text-white rounded-full bg-green-500 p-2 shadow-lg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M9 5l7 7-7 7"
-          />
-        </svg>
-      </button>
-    ),
-    prevArrow: (
-      <button className="absolute top-1/2 left-0 transform -translate-y-1/2 focus:outline-none z-10">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-8 w-8 text-white rounded-full bg-green-500 p-2 shadow-lg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M15 19l-7-7 7-7"
-          />
-        </svg>
-      </button>
-    ),
-  };
+  }, [token]);
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
@@ -144,60 +72,108 @@ const UserProfile = () => {
           Recipes Created
         </h3>
         {user.recipesCreated.length > 0 ? (
-          <Slider className="ml-10 pl-12 mr-10" {...carouselSettings}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {user.recipesCreated.map((recipe) => (
-              <div key={recipe._id} className="px-2 relative">
-                <div
-                  onClick={() => deleteRecipe(recipe._id)}
-                  className=" bg-[#bfd592] cursor-pointer hover:scale-110 absolute p-2 h rounded-full z-20 left-0"
-                  type="button"
-                >
-                  <FaTrash />
-                </div>
-                <div
-                  onClick={() => {
-                    navigate(`/user/updaterecipe/${recipe._id}`);
-                  }}
-                  className=" bg-[#bfd592] cursor-pointer absolute p-2 hover:scale-110 rounded-full z-20 left-[320px] top-[140px]"
-                  type="button"
-                >
-                  <MdEdit />
-                </div>
+              <div
+                key={recipe._id}
+                className="relative bg-white p-4 rounded-lg "
+              >
                 <Link to={`/recipes/${recipe._id}`}>
-                  <RecipeItem recipe={recipe} onLike={0} onDislike={0} />
+                  <div className="bg-white shadow-lg hover:shadow-xl max-w-sm border border-gray-200 rounded-lg overflow-hidden cursor-pointer">
+                    {/* Recipe Image */}
+                    <img
+                      src={recipe.strMealThumb}
+                      alt={recipe.strMeal}
+                      className="w-full h-40 object-cover"
+                    />
+                    {/* Recipe Details */}
+                    <div className="p-4">
+                      <h3 className="text-lg font-semibold mb-2">
+                        {recipe.strMeal}
+                      </h3>
+                      <p className="text-gray-700">
+                        {recipe.strInstructions.substring(0, 100)}...
+                      </p>
+                    </div>
+                    {/* Like and Dislike Buttons */}
+                    <div className="flex bg-black justify-between p-4">
+                      {/* Like Button */}
+                      <div className="flex justify-center items-center">
+                        <button className="mr-2">
+                          <FontAwesomeIcon
+                            icon={faThumbsUp}
+                            className="h-6 w-6"
+                            style={{ color: "#66b234" }}
+                          />
+                        </button>
+                        <h2 className="text-white">{recipe.likes.length}</h2>
+                      </div>
+                      {/* Dislike Button */}
+                      <div className="flex justify-center items-center">
+                        <button className="mr-2">
+                          <FontAwesomeIcon
+                            icon={faThumbsDown}
+                            className="h-6 w-6"
+                            style={{ color: "#f9343e" }}
+                          />
+                        </button>
+                        <h2 className="text-white">{recipe.dislikes.length}</h2>
+                      </div>
+                    </div>
+                  </div>
                 </Link>
+                <div className="absolute top-[165px] right-[100px] flex gap-2">
+                  <button
+                    onClick={() => deleteRecipe(recipe._id)}
+                    className="bg-red-500 text-white p-2 rounded-full hover:bg-red-600 hover:scale-110 duration-150 ease-in-out focus:outline-none"
+                    title="Delete Recipe"
+                  >
+                    <FaTrash />
+                  </button>
+                  <button
+                    onClick={() => {
+                      navigate(`/user/updaterecipe/${recipe._id}`);
+                    }}
+                    className="bg-blue-500 text-white p-2 rounded-full hover:bg-blue-600 hover:scale-110 duration-150 ease-in-out focus:outline-none"
+                    title="Edit Recipe"
+                  >
+                    <MdEdit />
+                  </button>
+                </div>
               </div>
             ))}
-          </Slider>
+          </div>
         ) : (
           <p className="text-lg text-gray-600">No recipes Created yet.</p>
         )}
       </div>
-     
-        <div
-          onClick={() => {
-            navigate("/user/createrecipe");
-          }}
-          className="my-10 hover:scale-125 cursor-pointer duration-200 p-3 mx-auto bg-green-200 rounded-full w-10 h-10 "
-        >
-          <FaPlus className="mx-auto" />
-        </div>
-   
+
+      <div
+        onClick={() => {
+          navigate("/user/createrecipe");
+        }}
+        className="my-10 hover:scale-125 cursor-pointer duration-200 p-3 mx-auto bg-green-200 rounded-full w-10 h-10 flex items-center justify-center"
+      >
+        <FaPlus />
+      </div>
 
       <div className="mt-12">
         <h3 className="text-3xl font-semibold text-gray-800 mb-6">
           Recipes Liked
         </h3>
         {user.likedRecipes.length > 0 ? (
-          <Slider className="ml-10 pl-12 mr-10" {...carouselSettings}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {user.likedRecipes.map((recipe) => (
-              <div key={recipe._id} className="px-2">
+              <div
+                key={recipe._id}
+                className="relative bg-white rounded-lg"
+              >
                 <Link to={`/recipes/${recipe._id}`}>
                   <RecipeItem recipe={recipe} onLike={0} onDislike={0} />
                 </Link>
               </div>
             ))}
-          </Slider>
+          </div>
         ) : (
           <p className="text-lg text-gray-600">No recipes Liked yet.</p>
         )}
