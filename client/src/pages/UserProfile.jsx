@@ -32,7 +32,7 @@ const UserProfile = () => {
     setLoading(true);
 
     try {
-      const response = await axios.get("http://localhost:3000/api/v1/profile", {
+      const response = await axios.get(`${window.location.origin}/api/v1/profile`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
