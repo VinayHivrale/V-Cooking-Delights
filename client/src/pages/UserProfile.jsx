@@ -54,17 +54,25 @@ const UserProfile = () => {
   if (!user) return <div>No user data found.</div>;
 
   return (
-    <div className="mx-auto w-full p-8 bg-white rounded-lg shadow-lg">
+    <div className="mx-auto w-full p-8 bg-gray-50 rounded-lg shadow-lg">
       <Navbar isLoggedIn={token !== ""} userName={`Hello ${user.name}`} />
+      
       <div className="mt-24"></div>
+
       <div className="text-center">
-        <h2 className="text-3xl font-bold text-gray-800 mb-4">User Profile</h2>
-        <p className="text-lg text-gray-600 mb-4">
-          <strong>Name:</strong> {user.name}
-        </p>
-        <p className="text-lg text-gray-600 mb-8">
-          <strong>Email:</strong> {user.email}
-        </p>
+        <div className="inline-block p-4 bg-blue-100 rounded-full mb-6">
+          <h2 className="text-4xl font-extrabold text-gray-800">User Profile</h2>
+        </div>
+        <div className="bg-white p-6 rounded-lg shadow-md max-w-sm mx-auto mb-8">
+          <p className="text-lg font-medium text-gray-700 mb-2">
+            <strong className="block text-gray-900 text-2xl">Name:</strong> 
+            {user.name}
+          </p>
+          <p className="text-lg font-medium text-gray-700">
+            <strong className="block text-gray-900 text-2xl">Email:</strong> 
+            {user.email}
+          </p>
+        </div>
       </div>
 
       <div className="mt-12">
@@ -76,7 +84,7 @@ const UserProfile = () => {
             {user.recipesCreated.map((recipe) => (
               <div
                 key={recipe._id}
-                className="relative bg-white p-4 rounded-lg "
+                className="relative bg-white p-4 rounded-lg shadow-lg"
               >
                 <Link to={`/recipes/${recipe._id}`}>
                   <div className="bg-white shadow-lg hover:shadow-xl max-w-sm border border-gray-200 rounded-lg overflow-hidden cursor-pointer">
@@ -151,7 +159,7 @@ const UserProfile = () => {
       <div
         onClick={() => {
           navigate("/user/createrecipe");
-        }}  //om is great
+        }}
         className="my-10 hover:scale-125 cursor-pointer duration-200 p-3 mx-auto bg-green-200 rounded-full w-10 h-10 flex items-center justify-center"
       >
         <FaPlus />
@@ -166,7 +174,7 @@ const UserProfile = () => {
             {user.likedRecipes.map((recipe) => (
               <div
                 key={recipe._id}
-                className="relative bg-white rounded-lg"
+                className="relative bg-white rounded-lg shadow-lg"
               >
                 <Link to={`/recipes/${recipe._id}`}>
                   <RecipeItem recipe={recipe} onLike={0} onDislike={0} />
