@@ -17,7 +17,7 @@ const UserProfile = () => {
 
   const deleteRecipe = async (recipeId) => {
     try {
-      await axios.delete(`http://localhost:3000/api/v1/recipe/${recipeId}`, {
+      await axios.delete(`${window.location.origin}/api/v1/recipe/${recipeId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
