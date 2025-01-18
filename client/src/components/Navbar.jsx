@@ -22,7 +22,7 @@ const Navbar = ({ isLoggedIn, userName }) => {
         <div>
           <Link to="/dashboard" className="text-lg font-bold flex items-center">
             <img
-              src="https://th.bing.com/th/id/OIG1.18HHd7VZFlfizIjzS600?pid=ImgGn"
+              src="https://sl.bing.net/iN4rcEhMjMO"
               alt="Cooking Delights Logo"
               className="mr-2 rounded-full border border-5 border-zinc-500 shadow-sm  h-10 w-10 bg-white"
             />
